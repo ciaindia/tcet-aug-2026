@@ -8,7 +8,19 @@ RUN:
 java ClassName
 
 You can visit this for today's program
+
 https://github.com/ciaindia/tcet-aug-2026.git
+
+
+//CW: WAP to print Hello World 10 times without using loop
+
+
+
+
+
+
+
+
 
 PascalCase -> ClassName, AccounDetails
 
