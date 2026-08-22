@@ -8,6 +8,7 @@ class Circle {
 
     public void area() {
         System.out.println("I am from Circle area with radius " + this.radius);
+        System.out.println("Area: " + 3.14 * this.radius * this.radius);
     }
 
 }
