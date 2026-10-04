@@ -139,12 +139,16 @@
     <div class="sidebar">
         <h2>Topics</h2>
         <ul>
-            <li><a href="#setup">1. Project Setup</a></li>
-            <li><a href="#db-schema">2. Database & Table</a></li>
-            <li><a href="#insert-data">3. Insert Queries</a></li>
-            <li><a href="#server-setup">4. Create app.js File</a></li>
-            <li><a href="#run">5. Run the Application</a></li>
-            <li><a href="#diagrams">6. Sequence Diagrams</a></li>
+            <li><a href="#prerequisites">0. Prerequisites</a></li>
+            <li><a href="#github-setup">1. GitHub Repository</a></li>
+            <li><a href="#folder-structure">2. Folder Structure</a></li>
+            <li><a href="#docker-mysql">3. Docker MySQL Database</a></li>
+            <li><a href="#db-schema">4. Database & Table</a></li>
+            <li><a href="#insert-data">5. Insert Queries</a></li>
+            <li><a href="#backend-setup">6. Backend Setup (app.js)</a></li>
+            <li><a href="#frontend-setup">7. Frontend Setup</a></li>
+            <li><a href="#run">8. Run the Application</a></li>
+            <li><a href="#diagrams">9. Sequence Diagrams</a></li>
         </ul>
         
         <h2 style="margin-top: 30px;">Other Guides</h2>
@@ -157,19 +161,53 @@
     <div class="content">
         <h1>Node.js, Express & MySQL Notes</h1>
 
-        <div id="setup" class="section">
-            <h2>1. Project Setup</h2>
-            <p>First, initialize a new Node.js project and install the necessary dependencies (Express framework and MySQL driver).</p>
-            <pre><code>npm init -y
-npm install express mysql2 cors
-npm install --save-dev nodemon</code></pre>
+        <div id="prerequisites" class="section">
+            <h2>0. Prerequisites</h2>
+            <p>Before you begin, make sure you have the following installed on your system:</p>
+            <ul>
+                <li><strong>Node.js and npm</strong>: You can download and install them from <a href="https://nodejs.org/" target="_blank">nodejs.org</a>. Verify the installation by running <code>node -v</code> and <code>npm -v</code> in your terminal.</li>
+                <li><strong>Docker Desktop</strong>: Required for running the MySQL database. Download it from <a href="https://www.docker.com/products/docker-desktop/" target="_blank">docker.com</a>.</li>
+                <li><strong>VS Code</strong>: The recommended code editor.</li>
+            </ul>
+        </div>
+
+        <div id="github-setup" class="section">
+            <h2>1. GitHub Repository</h2>
+            <p>Start by creating a new repository on GitHub and cloning it to your local machine.</p>
+            <ol>
+                <li>Go to GitHub and create a new repository (e.g., <code>my-fullstack-app</code>).</li>
+                <li>Copy the repository URL.</li>
+                <li>Open the VS Code integrated terminal (<kbd>Ctrl</kbd> + <kbd>`</kbd>) and clone the repository:</li>
+            </ol>
+            <pre><code>git clone https://github.com/yourusername/my-fullstack-app.git</code></pre>
+            <p>After cloning, open the new folder in VS Code by going to <strong>File > Open Folder...</strong> and selecting <code>my-fullstack-app</code>, or by running <code>code my-fullstack-app</code> in the terminal.</p>
+        </div>
+
+        <div id="folder-structure" class="section">
+            <h2>2. Folder Structure</h2>
+            <p>Using the VS Code Explorer (on the left sidebar), create two new folders inside your project directory named <code>backend</code> and <code>frontend</code>. Alternatively, you can use the integrated terminal:</p>
+            <pre><code>mkdir backend frontend</code></pre>
+        </div>
+
+        <div id="docker-mysql" class="section">
+            <h2>3. Docker MySQL Database</h2>
+            <p>Open Docker Desktop and run the following command to start a MySQL container.</p>
+            <pre><code>docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=qwerasdf -e MYSQL_DATABASE=company -p 3306:3306 -d mysql:latest</code></pre>
+            <p>This command creates a container named <code>mysql-db</code>, sets the root password to <code>qwerasdf</code>, and creates a database named <code>company</code>.</p>
         </div>
 
         <div id="db-schema" class="section">
-            <h2>2. Database & Table Creation</h2>
-            <p>Connect to your MySQL server (via CLI or GUI like MySQL Workbench/phpMyAdmin) and execute the following SQL to create the <code>company</code> database and the <code>employees</code> table.</p>
-            <pre><code><span class="keyword">CREATE DATABASE</span> company;
-<span class="keyword">USE</span> company;
+            <h2>4. Database & Table Creation</h2>
+            <p>Since you are getting familiar with the terminal, the easiest way to connect to your database is directly through the Docker Desktop application:</p>
+            <ol>
+                <li>Open <strong>Docker Desktop</strong> and go to the <strong>Containers</strong> tab.</li>
+                <li>Click on your running container named <code>mysql-db</code>.</li>
+                <li>Click on the <strong>Exec</strong> tab at the top. This opens a terminal directly inside the container.</li>
+                <li>Type <code>mysql -u root -p</code> and press <kbd>Enter</kbd>.</li>
+                <li>When asked for the password, type <code>qwerasdf</code> (the characters won't show up as you type) and press <kbd>Enter</kbd>.</li>
+            </ol>
+            <p>Once connected to the <code>mysql&gt;</code> prompt, execute the following SQL to select the <code>company</code> database and create the <code>employees</code> table.</p>
+            <pre><code><span class="keyword">USE</span> company;
 
 <span class="keyword">CREATE TABLE</span> employees (
     id <span class="keyword">INT AUTO_INCREMENT PRIMARY KEY</span>,
@@ -180,7 +218,7 @@ npm install --save-dev nodemon</code></pre>
         </div>
 
         <div id="insert-data" class="section">
-            <h2>3. Insert Data (10 Indian Employees)</h2>
+            <h2>5. Insert Data (10 Indian Employees)</h2>
             <p>Run this query to populate the <code>employees</code> table with sample data.</p>
             <pre><code><span class="keyword">INSERT INTO</span> employees (name, department, salary) <span class="keyword">VALUES</span>
 (<span class="string">'Aarav Sharma'</span>, <span class="string">'Engineering'</span>, 85000),
@@ -195,9 +233,14 @@ npm install --save-dev nodemon</code></pre>
 (<span class="string">'Pooja Iyer'</span>, <span class="string">'Finance'</span>, 92000);</code></pre>
         </div>
 
-        <div id="server-setup" class="section">
-            <h2>4. Create Single app.js File</h2>
-            <p>Create a single file named <code>app.js</code> and add the following code to set up the Express server, connect to MySQL, and define the CRUD API routes all in one place.</p>
+        <div id="backend-setup" class="section">
+            <h2>6. Backend Setup (app.js)</h2>
+            <p>In the VS Code terminal, navigate to the <code>backend</code> directory, initialize the project, and install the necessary dependencies:</p>
+            <pre><code>cd backend
+npm init -y
+npm install express mysql2 cors
+npm install --save-dev nodemon</code></pre>
+            <p>Next, use the VS Code Explorer to create a file named <code>app.js</code> inside the <code>backend</code> folder and add the following code to set up the Express server, connect to MySQL, and define the CRUD API routes.</p>
             <pre><code>const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -211,7 +254,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     port: 3306, <span class="comment">// Default MySQL port</span>
     user: 'root', <span class="comment">// Replace with your MySQL username</span>
-    password: 'password', <span class="comment">// Replace with your MySQL password</span>
+    password: 'qwerasdf', <span class="comment">// Replace with your MySQL password</span>
     database: 'company'
 });
 
@@ -289,19 +332,131 @@ app.listen(PORT, () => {
 
 
 
+        <div id="frontend-setup" class="section">
+            <h2>7. Frontend Setup</h2>
+            <p>Using the VS Code Explorer, navigate to the <code>frontend</code> directory and create three new files: <code>index.html</code>, <code>style.css</code>, and <code>script.js</code>.</p>
+            
+            <h3>index.html</h3>
+            <p>Add the following structure to create a basic UI for the employee list:</p>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My Fullstack App&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;Employee Management App&lt;/h1&gt;
+        &lt;button id="load-btn"&gt;Load Employees&lt;/button&gt;
+        &lt;ul id="employee-list"&gt;&lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <h3>style.css</h3>
+            <p>Add some basic styling to make it look clean:</p>
+            <pre><code>body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #ecf0f1;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 4px;
+    border-left: 4px solid #3498db;
+}</code></pre>
+
+            <h3>script.js</h3>
+            <p>Add JavaScript to fetch data from your Node.js backend when the button is clicked:</p>
+            <pre><code>document.getElementById('load-btn').addEventListener('click', async () => {
+    const list = document.getElementById('employee-list');
+    list.innerHTML = '&lt;li&gt;Loading...&lt;/li&gt;';
+    
+    try {
+        const response = await fetch('http://localhost:3000/api/employees');
+        const employees = await response.json();
+        
+        list.innerHTML = ''; // Clear loading text
+        
+        if (employees.length === 0) {
+            list.innerHTML = '&lt;li&gt;No employees found.&lt;/li&gt;';
+            return;
+        }
+        
+        employees.forEach(emp => {
+            const li = document.createElement('li');
+            li.innerHTML = `&lt;strong&gt;${emp.name}&lt;/strong&gt; &lt;br&gt; 
+                            Dept: ${emp.department} &lt;br&gt; 
+                            Salary: $${emp.salary}`;
+            list.appendChild(li);
+        });
+    } catch (error) {
+        console.error('Error fetching employees:', error);
+        list.innerHTML = '&lt;li style="color: red;"&gt;Failed to load data. Is the backend running?&lt;/li&gt;';
+    }
+});</code></pre>
+        </div>
+
         <div id="run" class="section">
-            <h2>5. Run the Application</h2>
-            <p>To run your Node.js application, open the VS Code terminal (<kbd>Ctrl</kbd> + <kbd>`</kbd>) in your project directory and execute either of the following commands:</p>
+            <h2>8. Run the Application</h2>
+            <p>To run your Node.js application, open the VS Code terminal (<kbd>Ctrl</kbd> + <kbd>`</kbd>) in your <code>backend</code> directory and execute either of the following commands:</p>
             <pre><code><span class="comment"># Using Node (Restart manually on changes)</span>
 node app.js
 
 <span class="comment"># Using Nodemon (Auto-restarts on changes)</span>
 nodemon app.js</code></pre>
-            <p>Your server will now be running on <code>http://localhost:3000</code>.</p>
+            <p>Your backend server will now be running on <code>http://localhost:3000</code>.</p>
+            
+            <h3>Running the Frontend (VS Code Live Server)</h3>
+            <p>To run the frontend HTML file, it is highly recommended to use the <strong>Live Server</strong> extension in VS Code:</p>
+            <ol>
+                <li>Open the Extensions view (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>) and search for "Live Server" by Ritwick Dey, then install it.</li>
+                <li>Open your <code>frontend/index.html</code> file in VS Code.</li>
+                <li>Right-click anywhere inside the HTML editor and select <strong>"Open with Live Server"</strong>, or click the <strong>"Go Live"</strong> button at the bottom right of the VS Code window.</li>
+            </ol>
+            <p>This will automatically open your frontend in the browser and reload it whenever you save changes.</p>
         </div>
 
         <div id="diagrams" class="section">
-            <h2>6. Sequence Diagrams</h2>
+            <h2>9. Sequence Diagrams</h2>
             <p>Below are the sequence diagrams for each CRUD operation.</p>
             
             <h3>Create (Add Employee)</h3>
